@@ -29,12 +29,11 @@ Suggestion: Read through the whole section before starting! (Or just go for it..
 ## Decide whether to use PowerShell 7 systemwide or isolated
 This'll help you set some variables over the next few steps. If it's already installed systemwide, no problem.
 If you want to install it isolated (eg, just for TACARS), that's covered in step 2.
-## Copy everything into a local folder, make a copy of GO_TEMPLATE.CMD
+## Copy everything into a local folder
+Copy the contents of the repo into a folder - we'll use D:\TACARS as our example. You can either do git magic for that if you're super pro, or hit Code->Download Zip from the Github button thingy at the top right, and extract the Zip to that folder...
 
-Copy the contents of the repo into a folder - we'll use D:\TACARS as our example.
-
-In that folder, make a copy of the GO_TEMPLATE.CMD - we'll use GO.CMD as our name.
-
+## Make a copy of GO_TEMPLATE.CMD
+In that folder, make a copy of `GO_TEMPLATE.CMD` - we'll use `GO.CMD` as our name.
 Then edit GO.CMD in your favourite text editor.
 
 You'll need to add your Log Analytics Workspace ID and Key need in your GO.CMD, and your proxy URL if you need one.
