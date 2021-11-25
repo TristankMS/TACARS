@@ -1,0 +1,208 @@
+{
+    "version": "Notebook/1.0",
+    "items": [
+      {
+        "type": 1,
+        "content": {
+          "json": "## Sample CA Reporting Queries\n---\n\nWelcome to your new workbook.  This area will display text formatted as markdown.\n\n\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections."
+        },
+        "name": "text - 2"
+      },
+      {
+        "type": 9,
+        "content": {
+          "version": "KqlParameterItem/1.0",
+          "parameters": [
+            {
+              "id": "6c3be6bd-a6cc-4c0a-9523-4ef1eac3499f",
+              "version": "KqlParameterItem/1.0",
+              "name": "TimeRange",
+              "label": "Time Range",
+              "type": 4,
+              "value": {
+                "durationMs": 604800000
+              },
+              "typeSettings": {
+                "selectableValues": [
+                  {
+                    "durationMs": 300000
+                  },
+                  {
+                    "durationMs": 900000
+                  },
+                  {
+                    "durationMs": 1800000
+                  },
+                  {
+                    "durationMs": 3600000
+                  },
+                  {
+                    "durationMs": 14400000
+                  },
+                  {
+                    "durationMs": 43200000
+                  },
+                  {
+                    "durationMs": 86400000
+                  },
+                  {
+                    "durationMs": 172800000
+                  },
+                  {
+                    "durationMs": 259200000
+                  },
+                  {
+                    "durationMs": 604800000
+                  },
+                  {
+                    "durationMs": 1209600000
+                  },
+                  {
+                    "durationMs": 2419200000
+                  },
+                  {
+                    "durationMs": 2592000000
+                  },
+                  {
+                    "durationMs": 5184000000
+                  },
+                  {
+                    "durationMs": 7776000000
+                  }
+                ],
+                "allowCustom": true
+              },
+              "timeContext": {
+                "durationMs": 86400000
+              }
+            }
+          ],
+          "style": "pills",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "name": "parameters - 6"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "union withsource=[\"$TableName\"] *\r\n| where RequestSubmitted_t {TimeRange}\r\n| summarize Count=dcount(RequestID_d) by TableName=[\"$TableName\"]\r\n| render barchart",
+          "size": 0,
+          "title": "Cert items with RequestSubmitted since time range",
+          "showExportToExcel": true,
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "customWidth": "50",
+        "name": "query - 5 - Copy",
+        "styleSettings": {
+          "padding": "4px"
+        }
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "union withsource=[\"$TableName\"] *\r\n| summarize Count=count() by TableName=[\"$TableName\"]\r\n| render barchart",
+          "size": 0,
+          "title": "Raw cert items uploaded per Table during timeframe",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "showExportToExcel": true,
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "customWidth": "50",
+        "name": "query - 5",
+        "styleSettings": {
+          "padding": "4px"
+        }
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "union withsource=[\"$TableName\"] *\r\n| where RequestSubmitted_t {TimeRange}\r\n| summarize Count=dcount(RequestID_d) by Host_s,  Requester_s, Template_s\r\n| order by Count desc\r\n\r\n// just noting that the TableName may be redundant if there are overlapping tables.\r\n// | summarize Count=dcount(RequestID_d) by TableName=[\"$TableName\"], Host_s,  Requester_s, Template_s",
+          "size": 0,
+          "title": "Unique Cert Requests by template",
+          "timeContext": {
+            "durationMs": 86400000
+          },
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "name": "query - 8"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "union withsource=[\"$TableName\"] *\n| summarize Count=dcount(RequestID_d) by Host_s,  Requester_s, Template_s\n| order by Count desc\n\n// just noting that the TableName may be redundant if there are overlapping tables.\n// | summarize Count=dcount(RequestID_d) by TableName=[\"$TableName\"], Host_s,  Requester_s, Template_s",
+          "size": 1,
+          "title": "Total unique Cert Template requests by requester",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "name": "query - 4"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "union withsource=[\"$TableName\"] *\r\n| where EKU_s contains(\"Client\")\r\n| where ValidTo_t > todatetime(now())\r\n| summarize Count=count() by TableName=[\"$TableName\"], EKU_s, Requester_s, Template_s\r\n| order by Count desc",
+          "size": 0,
+          "title": "Certs which are still time-valid",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "name": "query - 4"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "union withsource=[\"$TableName\"] *\r\n| summarize Count=count() by DispositionMessage_s, Disposition_s\r\n| order by Count desc",
+          "size": 0,
+          "title": "Disposition Message Outcomes",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "name": "query - 4"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "union withsource=[\"$TableName\"] *\r\n| where ValidTo_t > todatetime(now())\r\n| summarize by [\"$TableName\"], ValidTo_t, Subject_CN_s, SAN_s, EKU_s, Requester_s, Template_s\r\n| order by ValidTo_t desc\r\n| take 100",
+          "size": 0,
+          "title": "Longest-lived certificates",
+          "timeContext": {
+            "durationMs": 0
+          },
+          "timeContextFromParameter": "TimeRange",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        },
+        "name": "queryLongestLived"
+      }
+    ],
+    "fallbackResourceIds": [
+      "/subscriptions/170e5c17-b477-42ae-a959-9f64fb12625a/resourcegroups/test-pkimonitoring/providers/Microsoft.OperationalInsights/workspaces/pkimonitor01"
+    ],
+    "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+  }
