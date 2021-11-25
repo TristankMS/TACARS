@@ -10,7 +10,7 @@ From there, you can do *!exciting!* things like:
 - Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) 
 
 2021-11-25 - This is the initial release, designed to test the concept.
- 
+
 ----------------------------------------------------------------------------------------------------
 ## Prerequisites In Brief
 ### Azure Monitor - a Log Analytics Workspace ID and Key
@@ -25,11 +25,11 @@ Can be installed system-wide or in its own little subfolder.
 
 ----------------------------------------------------------------------------------------------------
 # Setup
-
-## 0. Decide whether to use PowerShell 7 systemwide or isolated
-This'll help you set some variables over the next few steps.
-If 
-## 1. Copy everything into a local folder, make a copy of GO_TEMPLATE.CMD
+Suggestion: Read through the whole section before starting! (Or just go for it...)
+## Decide whether to use PowerShell 7 systemwide or isolated
+This'll help you set some variables over the next few steps. If it's already installed systemwide, no problem.
+If you want to install it isolated (eg, just for TACARS), that's covered in step 2.
+## Copy everything into a local folder, make a copy of GO_TEMPLATE.CMD
 
 Copy the contents of the repo into a folder - we'll use D:\TACARS as our example.
 
@@ -47,7 +47,7 @@ You can also edit the sort of requests you want:
 Each type is a built-in option implemented in LargeLogger.cmd.
 
 ----------------------------------------------------------------------------------------------------
-## 2. Designed to run on PowerShell 7
+## Designed to run on PowerShell 7
 
 If you've got PS7 installed systemwide, things should Just Work.
 
@@ -64,7 +64,7 @@ https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powersh
   - (and it wasn't, btw)
 
 ----------------------------------------------------------------------------------------------------
-## 3. Ready to run! 
+## Ready to run! 
 
 - Open an Admin command prompt in this folder
 - Run GO.CMD
@@ -73,7 +73,7 @@ https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powersh
 - Report any problems!
 
 ----------------------------------------------------------------------------------------------------
-## 4. When Things Go Wrong
+## When Things Go Wrong
 
 Oh yes, it'll happen.
 
