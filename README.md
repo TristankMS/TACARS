@@ -72,17 +72,16 @@ Here's how:
 ### Download the standalone PowerShell 7.x Zip
 https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2#installing-the-zip-package
 ### Extract the PS7 binaries to a folder under this one
-eg: 
-  - if we're in `D:\TACARS` now, 
-  - I'd suggest `D:\TACARS\PS7`
+eg: if we're in `D:\TACARS` now, I'd suggest `D:\TACARS\PS7` so that PWSH.EXE is at `D:\TACARS\PS7\PWSH.EXE`
 ### Edit GO.CMD 
-Change the line
+And depending on where you extracted to, change the line
 
 `SET PWSHPATH=PS7\PWSH.EXE` to 
 
 `SET PWSHPATH=MYIDEAWASBETTER\PWSH.EXE`
+(and it wasn't, btw!) 
 
-(and it wasn't, btw)
+You can use a relative (more flexible) or fully-qualified (more robust) path to PWSH as needed.
 
 ----------------------------------------------------------------------------------------------------
 ## Ready to run! 
