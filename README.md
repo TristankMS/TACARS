@@ -134,15 +134,19 @@ Hardest: just fix it all for me, there's a dear.
 ----------------------------------------------------------------------------------------------------
 # Footnotes
 [1] aka *TristanK's Awful CA Reporting System* but that didn't seem like it'd *sell*.
+
 [2] Couple of things about "DB" history: `certutil -deleterow` will purge requests from the CA database,
 and you can configure the CA not to log issuance of certain templates in the database *at all*. TACARS 
 can only report on requests it can find, so if you've purged a buncha requests from the database, it's 
 not going to find them [3].
+
 [3] Other methods might, though, like CA Auditing - they might still be visible from the CA Event Logs,
 if they're being collected and archived somewhere. See editorial in [4].
+
 [4] General Windows Event Log archival/collection is considered a *solved problem* by this project. 
 TACARS is more about the forensic value remaining in the database itself. Not logging something to 
 the DB implies two things: 1- it's so short-lived that it's not of value, or 2- it's so low-value it's 
 not worth logging [5]. There's a CA-level switch *as well as* a template-level switch required to 
 implement *non-logging*, so it has already been considered twice in most cases...
+
 [5] Not all human decisions are good ones.
