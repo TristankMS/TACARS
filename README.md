@@ -55,7 +55,7 @@ after the first upload to a newly-named table.
 `SET TABLENAME=` defaults to the computer name if blank, use `SET TABLENAME=%COMPUTERNAME%20210101` or similar for versioning. Or call it Julio? Julio is a fine name for a table.
 
 ----------------------------------------------------------------------------------------------------
-## Designed to run with PowerShell 7
+## Install/specify PowerShell 7 EXE
 
 TACARS was originally made for PS 5.1, but the feature and performance benefits of PS7 turned out to be 
 very compelling!
@@ -116,20 +116,21 @@ Hardest: just fix it all for me, there's a dear.
 # Known Issues
 
 - General fragility/fiddliness 
-  - TACARS initial release is cobbleware, not engineering!
-  - Maybe later it'll be the Totally Awesome CA Reporting System!
-  - but to counter that, designed so that if it ran once, it'll run next time and just upload the delta
+  - TACARS initial release is *cobbleware*, not *engineering*! It's designed to be Proof Of Concept-y.
+  - Maybe later it'll be the *Totally Awesome* CA Reporting System! Maybe...
+  - But designed so that if it runs once, it'll run next time as well, and just upload the new IDs since last time
 
 - Assume you'll need a new LA table occasionally
   - Log Analytics currently retains records for up to 2 years
     - and is read-only once records are uploaded
   - This could be a benefit or a hazard for CA reporting
-  - Keep in mind that LA is not a "live" copy of the CA database
-    - You may need to run AllRequests / ActiveCertsBasic to another table in order to see any changes 
+  - Keep in mind that the LA table is not a *live* copy of the CA database
+    - You may need to run AllRequests / ActiveCertsBasic to another table in order to see any changes
+    - Example: When you issue a request, disposition changes to 20 - if that happens for a request issued in the past, you won't see that in the next upload, you need a complete new DB upload to see that. 
 
 - There's an odd set of dependencies between the logging systems, which results in the last log
-  being overwritten when there's nothing new to do. This is by design for this version, considering a
-  more integrated logging system for future versions.
+  being overwritten when there's nothing new to do. 
+  - Assume this is by-design for this version, but considering a more integrated logging system for future versions.
 
 ----------------------------------------------------------------------------------------------------
 # Footnotes
