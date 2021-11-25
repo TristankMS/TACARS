@@ -40,9 +40,10 @@ if NOT "%PROXYURL%"=="" SET PROXYBIT= -ProxyServerURL %PROXYURL%
 if NOT "%EXTRABACKUP%"=="" SET EXTRABIT= -ExportBackupPath %EXTRABACKUP%
 if "%COLLECTIONTARGET%"=="" SET COLLECTIONTARGET=AllRequests
 if "%TABLENAME%"=="" SET TABLENAME=%COMPUTERNAME%
+if "%1"=="NOUPLOAD" SET NOUPLOADBIT= -NoUpload
 
 :: Run PowerShell 7 with the parameters above.
-%PWSHPATH% -command "& {.\Start-UploadCertificateData.ps1 -CollectionTarget %COLLECTIONTARGET% -TableName %TABLENAME% -WorkspaceID %WORKSPACEID% -WorkspaceKey %WORKSPACEKEY% %PROXYBIT% %EXTRABIT% }
+%PWSHPATH% -command "& {.\ExportCertificateData.ps1 -CollectionTarget %COLLECTIONTARGET% -TableName %TABLENAME% -WorkspaceID %WORKSPACEID% -WorkspaceKey %WORKSPACEKEY% %PROXYBIT% %EXTRABIT% %NOUPLOADBIT%}
 
 :: And we're done!
 ENDLOCAL
