@@ -1,5 +1,5 @@
-# TACARS - Tenuously Adequate CA Reporting System
-*(See [1])*
+# TACARS - *Tenuously Adequate CA Reporting System*
+Backronym! *(See [1])*
 
 **Short**: Makes a copy of an Active Directory Certificate Services (ADCS) Certification Authority (CA) 
 certificate database in a Log Analytics (LA) workspace.
