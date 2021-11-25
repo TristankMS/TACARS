@@ -1,13 +1,13 @@
 # TACARS - Tenuously Adequate CA Reporting System
-(See [1])
+*(See [1])*
 
-**Short**: Makes a copy of certificate requests from your Active Directory Certificate Services (ADCS) 
-certificate database in a Log Analytics workspace.
+**Short**: Makes a copy of an Active Directory Certificate Services (ADCS) Certification Authority (CA) 
+certificate database in a Log Analytics (LA) workspace.
 
 From there, you can do *!exciting!* things like:
-- Enjoy orders-of-magnitude **faster queries** about **certificate issuance/failure** and related stats
-- Include details of historical certificate issuance in **Log Analytics/Microsoft Sentinel** queries
-- Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) 
+- Enjoy *orders-of-magnitude* **faster queries** about **certificate issuance/failure** and related stats
+- Reference historical certificate issuance in **Log Analytics/Microsoft Sentinel** queries/threat hunting
+- Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress)
 
 **2021-11-25** - This is the initial release, designed to test the concept.
 
