@@ -2,7 +2,7 @@
 Backronym! *(See [1])*
 
 **Short**: Makes a copy of an Active Directory Certificate Services (ADCS) Certification Authority (CA) 
-certificate database in a Log Analytics (LA) workspace.
+certificate database (DB) in a Log Analytics (LA) workspace.
 
 From there, you can do *!exciting!* things like:
 - Enjoy *orders-of-magnitude* **faster queries** about **certificate issuance/failure** and related stats
@@ -32,20 +32,28 @@ If you want to install it isolated (eg, just for TACARS), that's covered in step
 ## Copy everything into a local folder
 Copy the contents of the repo into a folder - we'll use D:\TACARS as our example. You can either do git magic for that if you're super pro, or hit Code->Download Zip from the Github button thingy at the top right, and extract the Zip to that folder...
 
-## Make a copy of GO_TEMPLATE.CMD
+## Copy GO_TEMPLATE.CMD to GO.CMD
+(First time only, or for every variation you need)
 In that folder, make a copy of `GO_TEMPLATE.CMD` - we'll use `GO.CMD` as our name.
-Then edit GO.CMD in your favourite text editor.
 
-You'll need to add your Log Analytics Workspace ID and Key need in your GO.CMD, and your proxy URL if you need one.
+## Edit GO.CMD parameters
+It's time to edit GO.CMD in your favourite text editor.
 
-You can also edit the type of requests you want to collect: 
+You'll need to add your **Log Analytics Workspace ID** and **Key** in GO.CMD, and set your proxy URL if you need one.
+
+You can also edit the type of requests you want to collect, by editing the line
+
+`SET COLLECTIONTARGET=AllRequests`
+
+Here are the suggested alternatives:
+
 | CollectionTarget | Description |
 | ---------------- | ----------- |
-|`AllRequests`     | every request (still) in the CA database[2], whether issued, denied, failed, revoked |
-|`ActiveCertsBasic`| certificates which were issued successfully, which are still within their validity period|
-|`IssuedCertsBasic`| certificates which were issued successfully at any point|
+|`AllRequests`     | (default) Every request still in the CA database [2], whether issued, denied, failed, revoked. This is the obvious option for detailed investigation at a given point in time, and provides the best visibility of all activity (still) recorded by the CA DB|
+|`ActiveCertsBasic`| Certificates which were issued successfully [2], which are still within their validity period|
+|`IssuedCertsBasic`| Certificates which were issued successfully at any point [2]|
 
-Each type listed above is a built-in option implemented in `LargeLogger.cmd` - see that file for possible options.
+Each CollectionTarget listed above is a built-in option implemented in `LargeLogger.cmd` - see that file for possible options. Every collection option supported by LargeLogger is assumed to be supported, but hasn't been tested.
 
 And finally, you can edit the table name. I haven't sorted out what to do about versioning here yet, so you
 can manually version any collection into a specific (new) LA table, which will show up about 5-10 minutes
