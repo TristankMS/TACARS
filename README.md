@@ -55,7 +55,13 @@ after the first upload to a newly-named table.
 `SET TABLENAME=` defaults to the computer name if blank, use `SET TABLENAME=%COMPUTERNAME%20210101` or similar for versioning. Or call it Julio? Julio is a fine name for a table.
 
 ----------------------------------------------------------------------------------------------------
-## Designed to run on PowerShell 7
+## Designed to run with PowerShell 7
+
+TACARS was originally made for PS 5.1, but the feature and performance benefits of PS7 turned out to be 
+very compelling!
+
+It wouldn't be hard to retrofit for PS 5.1 again, accepting a few limitations and ~50% performance, so if
+you need that, go for it! Otherwise, an isolated PS7 instance is the recommended option.
 
 If you've got PS7 installed system-wide, you (probably) need to edit the line:
 
