@@ -1,9 +1,8 @@
 # TACARS 
-=================================================
-  Tenuously Adequate CA Reporting System [1]
-=================================================
+# Tenuously Adequate CA Reporting System
+(See [1])
 
-Short: Makes a copy of relevant info from your ADCS certificate database in a Log Analytics workspace.
+*Short*: Makes a copy of relevant info from your ADCS certificate database in a Log Analytics workspace.
 
 From there, you can do things like:
 - Enjoy orders-of-magnitude faster certificate issuance/failure queries
@@ -85,9 +84,9 @@ and re-run from there...
 
 Hardest: just fix it all for me, there's a dear.
 
-============
-Known Issues
-============
+----------------------------------------------------------------------------------------------------
+# Known Issues
+
 - General fragility/fiddliness 
   - TACARS initial release is cobbleware, not engineering!
   - Maybe later it'll be the Totally Awesome CA Reporting System!
@@ -104,6 +103,6 @@ Known Issues
   being overwritten when there's nothing new to do. This is by design for this version, considering a
   more integrated logging system for future versions.
 
-====================================================================================================
-Footnotes
+----------------------------------------------------------------------------------------------------\
+# Footnotes
 [1] aka TristanK's Awful CA Reporting System
