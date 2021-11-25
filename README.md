@@ -133,7 +133,7 @@ Hardest: just fix it all for me, there's a dear.
 
 ----------------------------------------------------------------------------------------------------
 # Footnotes
-[1] aka *TristanK's Awful CA Reporting System* but that didn't seem like it'd *sell*.
+[1] aka *TristanK's Awful CA Reporting System*, but that didn't seem like it'd *sell*!
 
 [2] Couple of things about "DB" history: `certutil -deleterow` will purge requests from the CA database,
 and you can configure the CA not to log issuance of certain templates in the database *at all*. TACARS 
