@@ -76,10 +76,13 @@ eg:
   - if we're in `D:\TACARS` now, 
   - I'd suggest `D:\TACARS\PS7`
 ### Edit GO.CMD 
-Change the lines 
+Change the line
+
 `SET PWSHPATH=PS7\PWSH.EXE` to 
+
 `SET PWSHPATH=MYIDEAWASBETTER\PWSH.EXE`
-  - (and it wasn't, btw)
+
+(and it wasn't, btw)
 
 ----------------------------------------------------------------------------------------------------
 ## Ready to run! 
