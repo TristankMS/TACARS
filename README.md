@@ -1,15 +1,19 @@
 # TACARS - *Tenuously Adequate CA Reporting System*
 Backronym! *(See [1])*
 
-**Short**: Makes a copy of an Active Directory Certificate Services (ADCS) Certification Authority (CA) 
-certificate database (DB) in a Log Analytics (LA) workspace.
+**Short**: Exports an Active Directory Certificate Services (ADCS) Certification Authority (CA) 
+certificate database (DB) to CSV, then uploads that data to a Log Analytics (LA) workspace.
+Subsequent runs pick up where the last one stopped, only the new request IDs are exported.
 
 From there, you can do *!exciting!* things like:
 - Enjoy *orders-of-magnitude* **faster queries** about **certificate issuance/failure** and related stats
 - Reference historical certificate issuance in **Log Analytics/Microsoft Sentinel** queries/threat hunting
 - Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress)
 
-**2021-11-25** - This is the initial release, designed to test the concept.
+**2021-11-25** - Initial release, designed to test the concept.
+
+**2021-11-26** - Added NOUPLOAD switch to GO.CMD, which stops after exporting to CSV. 
+                 Use with the ExtraBackup variable set to get unique CSVs per run.
 
 ----------------------------------------------------------------------------------------------------
 ## Prerequisites In Brief
@@ -58,6 +62,8 @@ Here are the suggested alternatives:
 |`AllRequests`     | (default) Every request still in the CA database [2], whether issued, denied, failed, revoked. This is the obvious option for detailed investigation at a given point in time, and provides the best visibility of all activity (still) recorded by the CA DB|
 |`ActiveCertsBasic`| Certificates which were issued successfully [2], which are still within their validity period|
 |`IssuedCertsBasic`| Certificates which were issued successfully at any point [2]|
+|`Issued30Day`     | Certs issued in the last 30 days |
+|`Denied30Day`     | Requests which didn't make it in the last 30 days|
 
 Each *CollectionTarget* listed above is a built-in option implemented in `LargeLogger.cmd` - inspect that file for other possible options. Every collection option supported by LargeLogger is assumed to be supported, but hasn't been tested.
 
@@ -107,6 +113,7 @@ You can use a relative (more flexible) or fully-qualified (more robust) path to 
 
 - Open an Admin command prompt in `D:\TACARS`
 - Run `GO.CMD`
+  - (Or run GO NOUPLOAD if you just want the CSV output)
 - Marvel at the speed with which things run (no, really, PS7 is super impressive)
 - Check for and fix any errors!
 - Report any problems!
