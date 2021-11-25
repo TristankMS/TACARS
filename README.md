@@ -58,9 +58,12 @@ after the first upload to a newly-named table.
 ## Designed to run on PowerShell 7
 
 If you've got PS7 installed system-wide, you (probably) need to edit the line:
+
 `SET PWSHPATH=PS7\PWSH.EXE`
 to
+
 `SET PWSHPATH=PWSH.EXE`
+
 ... Assuming the system PATH contains the path to the PWSH EXE.
 
 But if you want to install PS7 in an isolated folder, you can! (And on a production CA, arguably *should*!) 
