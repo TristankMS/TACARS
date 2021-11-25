@@ -41,6 +41,12 @@ It's time to edit GO.CMD in your favourite text editor.
 
 You'll need to add your **Log Analytics Workspace ID** and **Key** in GO.CMD, and set your proxy URL if you need one.
 
+Edit these lines, making sure not to add spaces near the equals signs (=) - CMD is compact, and means what it says!
+
+`SET WORKSPACEID=12345678-blah-blah-blah-123456780123`
+
+`SET WORKSPACEKEY=Base64encodingmeansthisisactuallyaSemiPlausibleOutcomebutthekeygoeshere==`
+
 You can also edit the type of requests you want to collect, by editing the line
 
 `SET COLLECTIONTARGET=AllRequests`
@@ -53,7 +59,7 @@ Here are the suggested alternatives:
 |`ActiveCertsBasic`| Certificates which were issued successfully [2], which are still within their validity period|
 |`IssuedCertsBasic`| Certificates which were issued successfully at any point [2]|
 
-Each CollectionTarget listed above is a built-in option implemented in `LargeLogger.cmd` - see that file for possible options. Every collection option supported by LargeLogger is assumed to be supported, but hasn't been tested.
+Each *CollectionTarget* listed above is a built-in option implemented in `LargeLogger.cmd` - inspect that file for other possible options. Every collection option supported by LargeLogger is assumed to be supported, but hasn't been tested.
 
 And finally, you can edit the table name. I haven't sorted out what to do about versioning here yet, so you
 can manually version any collection into a specific (new) LA table, which will show up about 5-10 minutes
