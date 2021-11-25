@@ -9,7 +9,7 @@ From there, you can do *!exciting!* things like:
 - Include details of historical certificate issuance in **Log Analytics/Microsoft Sentinel** queries
 - Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) 
 
-2021-11-25 - This is the initial release, designed to test the concept.
+**2021-11-25** - This is the initial release, designed to test the concept.
 
 ----------------------------------------------------------------------------------------------------
 ## Prerequisites In Brief
@@ -39,37 +39,52 @@ Then edit GO.CMD in your favourite text editor.
 
 You'll need to add your Log Analytics Workspace ID and Key need in your GO.CMD, and your proxy URL if you need one.
 
-You can also edit the sort of requests you want: 
- - AllRequests          - every request fielded by the CA, whether issued, denied, failed, revoked 
- - ActiveCertsBasic     - certificates which were issued successfully, which are still within their validity period
- - IssuedCertsBasic     - certificates which were issued successfully at any point
+You can also edit the type of requests you want to collect: 
+| CollectionTarget | Description |
+| ---------------- | ----------- |
+|`AllRequests`     | every request db-logged by the CA, whether issued, denied, failed, revoked |
+|`ActiveCertsBasic`| certificates which were issued successfully, which are still within their validity period|
+|`IssuedCertsBasic`| certificates which were issued successfully at any point|
 
-Each type is a built-in option implemented in LargeLogger.cmd.
+Each type listed above is a built-in option implemented in `LargeLogger.cmd` - see that file for possible options.
+
+And finally, you can edit the table name. I haven't sorted out what to do about versioning here yet, so you
+can manually version any collection into a specific (new) LA table, which will show up about 5-10 minutes
+after the first upload to a newly-named table.
+
+`SET TABLENAME=` defaults to the computer name if blank, use `SET TABLENAME=%COMPUTERNAME%20210101` or similar for versioning. Or call it Julio? Julio is a fine name for a table.
 
 ----------------------------------------------------------------------------------------------------
 ## Designed to run on PowerShell 7
 
-If you've got PS7 installed systemwide, things should Just Work.
+If you've got PS7 installed system-wide, you (probably) need to edit the line:
+`SET PWSHPATH=PS7\PWSH.EXE`
+to
+`SET PWSHPATH=PWSH.EXE`
+... Assuming the system PATH contains the path to the PWSH EXE.
 
-But if you want to install PS7 in an isolated folder, you can!
+But if you want to install PS7 in an isolated folder, you can! (And on a production CA, arguably *should*!) 
 
-### Download the standalone PowerShell 7 Zip
-https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.1#installing-the-zip-package
-
-### Extract the PS7 binaries to a folder under this one, eg:
-  - if we're in D:\TACARS now, 
-  - I'd suggest D:\TACARS\PS7
-
-### Edit GO.CMD and change SET PWSHPATH=PS7\PWSH.EXE to SET PWSHPATH=MYIDEAWASBETTER\PWSH.EXE
+Here's how:
+### Download the standalone PowerShell 7.x Zip
+https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2#installing-the-zip-package
+### Extract the PS7 binaries to a folder under this one
+eg: 
+  - if we're in `D:\TACARS` now, 
+  - I'd suggest `D:\TACARS\PS7`
+### Edit GO.CMD 
+Change the lines 
+`SET PWSHPATH=PS7\PWSH.EXE` to 
+`SET PWSHPATH=MYIDEAWASBETTER\PWSH.EXE`
   - (and it wasn't, btw)
 
 ----------------------------------------------------------------------------------------------------
 ## Ready to run! 
 
-- Open an Admin command prompt in this folder
-- Run GO.CMD
+- Open an Admin command prompt in `D:\TACARS`
+- Run `GO.CMD`
 - Marvel at the speed with which things run (no, really, PS7 is super impressive)
-- Check any errors!
+- Check for and fix any errors!
 - Report any problems!
 
 ----------------------------------------------------------------------------------------------------
