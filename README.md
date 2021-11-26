@@ -16,18 +16,22 @@ From there, you can do *!exciting!* things like:
                  Use with the ExtraBackup variable set to get unique CSVs per run.
 
 ----------------------------------------------------------------------------------------------------
+
 ## Prerequisites In Brief
 ### Azure Monitor - a Log Analytics Workspace ID and Key
 https://portal.azure.com to set one up.
 No additional library or agent is needed, we just use the LA REST API for uploads.
 
 ### Local CA - A local folder with some disk space
-The Collector etc is designed to run locally on a CA in this release.
+The Collector etc is designed to run locally on a CA in this release. 
+It does support export of the CSV files produced to a second location by simple file copy, though - edit GO.CMD and 
+modify the ExtraBackup line, eg `SET ExtraBackup=\\BACKUPS\CAData`.
 
 ### PowerShell 7.x
 Can be installed system-wide or in its own little subfolder.
 
 ----------------------------------------------------------------------------------------------------
+
 # Setup
 Suggestion: Read through the whole section before starting! (Or just go for it...)
 ## Decide whether to use PowerShell 7 systemwide or isolated
@@ -74,6 +78,7 @@ after the first upload to a newly-named table.
 `SET TABLENAME=` defaults to the computer name if blank, use `SET TABLENAME=%COMPUTERNAME%20210101` or similar for versioning. Or call it Julio? Julio is a fine name for a table.
 
 ----------------------------------------------------------------------------------------------------
+
 ## Install/specify PowerShell 7 EXE
 
 TACARS was originally made for PS 5.1, but the feature and performance benefits of PS7 turned out to be 
@@ -109,6 +114,7 @@ And depending on where you extracted to, change the line
 You can use a relative (more flexible) or fully-qualified (more robust) path to PWSH as needed.
 
 ----------------------------------------------------------------------------------------------------
+
 ## Ready to run! 
 
 - Open an Admin command prompt in `D:\TACARS`
@@ -119,6 +125,7 @@ You can use a relative (more flexible) or fully-qualified (more robust) path to 
 - Report any problems!
 
 ----------------------------------------------------------------------------------------------------
+
 ## When Things Go Wrong
 
 Oh yes, it'll happen.
@@ -133,6 +140,7 @@ and re-run from there...
 Hardest: just fix it all for me, there's a dear.
 
 ----------------------------------------------------------------------------------------------------
+
 # Known Issues
 
 - General fragility/fiddliness 
@@ -153,6 +161,7 @@ Hardest: just fix it all for me, there's a dear.
   - Assume this is by-design for this version, but considering a more integrated logging system for future versions.
 
 ----------------------------------------------------------------------------------------------------
+
 # Footnotes
 [1] aka *TristanK's Awful CA Reporting System*, but that didn't seem like it'd *sell*!
 
