@@ -30,7 +30,7 @@ SET ExtraBackup=
 :: Create backup folder if needed
 if NOT "%PROXYURL%"=="" SET PROXYBIT= -ProxyServerURL %PROXYURL%
 if NOT "%EXTRABACKUP%"=="" (
-    IF NOT EXIST %EXTRABACKUP%(
+    IF NOT EXIST %EXTRABACKUP% (
         echo Creating %EXTRABACKUP%
         MD %EXTRABACKUP% 
         )
