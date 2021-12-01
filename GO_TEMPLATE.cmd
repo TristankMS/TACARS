@@ -24,7 +24,7 @@ SET PWSHPATH=PS7\PWSH.EXE
 
 :: Want a backup of the intermediate CSV files? We can do that...
 :: The folder will be created for you if it doesn't exist, so get it right!
-SET ExtraBackup=
+SET "ExtraBackup="
 :: e.g. SET ExtraBackup=C:\ExtraLogs
 
 :: Create backup folder if needed
