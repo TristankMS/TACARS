@@ -67,13 +67,15 @@ Here are the suggested alternatives:
 |`Issued30Day`     | Certs issued in the last 30 days |
 |`Denied30Day`     | Requests which didn't make it in the last 30 days|
 
-Each *CollectionTarget* listed above is a built-in option implemented in `LargeLogger.cmd` - inspect that file for other possible options. Every collection option supported by LargeLogger is assumed to be supported, but hasn't been tested.
+Each *CollectionTarget* listed above is a built-in option implemented in `LargeLogger.cmd` - inspect that file for other possible pre-existing options! Every collection option supported by LargeLogger is assumed to be supported, but hasn't been tested. You can make your own too - see the Wiki for ideas.
 
 And finally, you can edit the table name. I haven't sorted out what to do about versioning here yet, so you
 can manually version any collection into a specific (new) LA table, which will show up about 5-10 minutes
 after the first upload to a newly-named table.
 
-`SET TABLENAME=` defaults to the computer name if blank, use `SET TABLENAME=%COMPUTERNAME%20210101` or similar for versioning. Or call it Julio? Julio is a fine name for a table.
+`SET TABLENAME=` defaults to the computer name if blank, use `SET TABLENAME=%COMPUTERNAME%20210101` or similar for versioning. 
+
+(Or call it Julio? Julio is a fine name for a table.)
 
 ----------------------------------------------------------------------------------------------------
 
@@ -117,7 +119,7 @@ You can use a relative (more flexible) or fully-qualified (more robust) path to 
 
 - Open an Admin command prompt in `D:\TACARS`
 - Run `GO.CMD`
-  - (Or run GO NOUPLOAD if you just want the CSV output)
+  - (Or run `GO NOUPLOAD` if you just want the CSV output)
 - Marvel at the speed with which things run (no, really, PS7 is super impressive)
 - Check for and fix any errors!
 - Report any problems!
@@ -129,11 +131,11 @@ You can use a relative (more flexible) or fully-qualified (more robust) path to 
 Oh yes, it'll happen.
 
 If the problem's during the upload, easy option is to Delete all the files beginning with the name 
-of your upload type (del AllRequests*.*), then run it again, use query filters to exclude one result 
+of your upload type (`del AllRequests*.*`), then run it again, use query filters to exclude one result 
 set, or just use a different table name.
 
-Harder: selectively edit the *-Watermark-Last.txt file to reset the maximum request ID seen 
-and re-run from there...
+Harder: selectively edit the `*-Watermark-Last.txt` file for the query type to reset the maximum 
+request ID to your chosen value, and re-run from there...
 
 Hardest: just fix it all for me, there's a dear.
 
