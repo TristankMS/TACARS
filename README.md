@@ -1,6 +1,4 @@
 # TACARS - *Tenuously Adequate CA Reporting System*
-Backronym! *(See [1])*
-
 **Short**: Exports an Active Directory Certificate Services (ADCS) Certification Authority (CA) 
 certificate database (DB) to CSV, then uploads that data to a Log Analytics (LA) workspace.
 Subsequent runs pick up where the last one stopped, only the new request IDs are exported.
@@ -8,7 +6,7 @@ Subsequent runs pick up where the last one stopped, only the new request IDs are
 From there, you can do *!exciting!* things like:
 - Enjoy *orders-of-magnitude* **faster queries** about **certificate issuance/failure** and related stats
 - Reference historical certificate issuance in **Log Analytics/Microsoft Sentinel** queries/threat hunting
-- Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress)
+- Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) (see [Wiki](https://github.com/TristankMS/TACARS/wiki) )
 
 **2021-11-25** - Initial release, designed to test the concept.
 
