@@ -1,29 +1,35 @@
 # TACARS - *Tenuously Adequate CA Reporting System*
-Backronym! *(See [1])*
-
-**Short**: Makes a copy of an Active Directory Certificate Services (ADCS) Certification Authority (CA) 
-certificate database (DB) in a Log Analytics (LA) workspace.
+**Short**: Exports an **Active Directory Certificate Services** (ADCS) **Certification Authority** (CA) 
+certificate database (DB) to CSV, then uploads that data to a **Log Analytics** (LA) workspace.
+Subsequent runs pick up where the last one stopped, only the new request IDs are exported.
 
 From there, you can do *!exciting!* things like:
 - Enjoy *orders-of-magnitude* **faster queries** about **certificate issuance/failure** and related stats
 - Reference historical certificate issuance in **Log Analytics/Microsoft Sentinel** queries/threat hunting
-- Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress)
+- Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) (see [Wiki](https://github.com/TristankMS/TACARS/wiki) )
 
-**2021-11-25** - This is the initial release, designed to test the concept.
+**2021-11-25** - Initial release, designed to test the concept.
+
+**2021-11-26** - Added NOUPLOAD switch to GO.CMD, which stops after exporting to CSV. 
+                 Use with the ExtraBackup variable set to get unique CSVs per run.
 
 ----------------------------------------------------------------------------------------------------
+
 ## Prerequisites In Brief
 ### Azure Monitor - a Log Analytics Workspace ID and Key
 https://portal.azure.com to set one up.
 No additional library or agent is needed, we just use the LA REST API for uploads.
 
 ### Local CA - A local folder with some disk space
-The Collector etc is designed to run locally on a CA in this release.
+The Collector etc is designed to run locally on a CA in this release. 
+It does support export of the CSV files produced to a second location by simple file copy, though - edit GO.CMD and 
+modify the ExtraBackup line, eg `SET ExtraBackup=\\BACKUPS\CAData`.
 
 ### PowerShell 7.x
 Can be installed system-wide or in its own little subfolder.
 
 ----------------------------------------------------------------------------------------------------
+
 # Setup
 Suggestion: Read through the whole section before starting! (Or just go for it...)
 ## Decide whether to use PowerShell 7 systemwide or isolated
@@ -58,16 +64,21 @@ Here are the suggested alternatives:
 |`AllRequests`     | (default) Every request still in the CA database [2], whether issued, denied, failed, revoked. This is the obvious option for detailed investigation at a given point in time, and provides the best visibility of all activity (still) recorded by the CA DB|
 |`ActiveCertsBasic`| Certificates which were issued successfully [2], which are still within their validity period|
 |`IssuedCertsBasic`| Certificates which were issued successfully at any point [2]|
+|`Issued30Day`     | Certs issued in the last 30 days |
+|`Denied30Day`     | Requests which didn't make it in the last 30 days|
 
-Each *CollectionTarget* listed above is a built-in option implemented in `LargeLogger.cmd` - inspect that file for other possible options. Every collection option supported by LargeLogger is assumed to be supported, but hasn't been tested.
+Each *CollectionTarget* listed above is a built-in option implemented in `LargeLogger.cmd` - inspect that file for other possible pre-existing options! Every collection option supported by LargeLogger is assumed to be supported, but hasn't been tested. You can make your own too - see the Wiki for ideas.
 
 And finally, you can edit the table name. I haven't sorted out what to do about versioning here yet, so you
 can manually version any collection into a specific (new) LA table, which will show up about 5-10 minutes
 after the first upload to a newly-named table.
 
-`SET TABLENAME=` defaults to the computer name if blank, use `SET TABLENAME=%COMPUTERNAME%20210101` or similar for versioning. Or call it Julio? Julio is a fine name for a table.
+`SET TABLENAME=` defaults to the computer name if blank, use `SET TABLENAME=%COMPUTERNAME%20210101` or similar for versioning. 
+
+(Or call it Julio? Julio is a fine name for a table.)
 
 ----------------------------------------------------------------------------------------------------
+
 ## Install/specify PowerShell 7 EXE
 
 TACARS was originally made for PS 5.1, but the feature and performance benefits of PS7 turned out to be 
@@ -103,29 +114,33 @@ And depending on where you extracted to, change the line
 You can use a relative (more flexible) or fully-qualified (more robust) path to PWSH as needed.
 
 ----------------------------------------------------------------------------------------------------
+
 ## Ready to run! 
 
 - Open an Admin command prompt in `D:\TACARS`
 - Run `GO.CMD`
+  - (Or run `GO NOUPLOAD` if you just want the CSV output)
 - Marvel at the speed with which things run (no, really, PS7 is super impressive)
 - Check for and fix any errors!
 - Report any problems!
 
 ----------------------------------------------------------------------------------------------------
+
 ## When Things Go Wrong
 
 Oh yes, it'll happen.
 
 If the problem's during the upload, easy option is to Delete all the files beginning with the name 
-of your upload type (del AllRequests*.*), then run it again, use query filters to exclude one result 
+of your upload type (`del AllRequests*.*`), then run it again, use query filters to exclude one result 
 set, or just use a different table name.
 
-Harder: selectively edit the *-Watermark-Last.txt file to reset the maximum request ID seen 
-and re-run from there...
+Harder: selectively edit the `*-Watermark-Last.txt` file for the query type to reset the maximum 
+request ID to your chosen value, and re-run from there...
 
 Hardest: just fix it all for me, there's a dear.
 
 ----------------------------------------------------------------------------------------------------
+
 # Known Issues
 
 - General fragility/fiddliness 
@@ -146,6 +161,7 @@ Hardest: just fix it all for me, there's a dear.
   - Assume this is by-design for this version, but considering a more integrated logging system for future versions.
 
 ----------------------------------------------------------------------------------------------------
+
 # Footnotes
 [1] aka *TristanK's Awful CA Reporting System*, but that didn't seem like it'd *sell*!
 
