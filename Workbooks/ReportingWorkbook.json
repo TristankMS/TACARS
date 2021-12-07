@@ -88,7 +88,6 @@
       "content": {
         "version": "KqlItem/1.0",
         "query": "union withsource=[\"$TableName\"] *\r\n| where RequestSubmitted_t {TimeRange}\r\n| summarize Count=dcount(RequestID_d) by TableName=[\"$TableName\"]",
-        "showQuery": true,
         "size": 0,
         "title": "Cert items with RequestSubmitted since time range",
         "showRefreshButton": true,
@@ -173,7 +172,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "//union withsource=[{SelectedTable}] *\r\n{SelectedTable}\r\n| where RequestSubmitted_t {TimeRange} \r\n| summarize Count=dcount(RequestID_d) by Host_s,  Requester_s, Template_s\r\n| order by Count desc\r\n\r\n// just noting that the TableName may be redundant if there are overlapping tables.\r\n// | summarize Count=dcount(RequestID_d) by TableName=[\"$TableName\"], Host_s,  Requester_s, Template_s",
+        "query": "{SelectedTable}\r\n| where RequestSubmitted_t {TimeRange} \r\n| summarize Count=dcount(RequestID_d) by Host_s,  Requester_s, Template_s\r\n| order by Count desc",
         "showQuery": true,
         "size": 0,
         "title": "Unique Cert Requests by template",
@@ -195,7 +194,7 @@
         "size": 1,
         "title": "Total unique Cert Template requests by requester",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -212,7 +211,7 @@
         "size": 0,
         "title": "Certs which are still time-valid",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -229,7 +228,7 @@
         "size": 0,
         "title": "Disposition Message Outcomes",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
@@ -245,7 +244,7 @@
         "size": 0,
         "title": "Longest-lived certificates",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
