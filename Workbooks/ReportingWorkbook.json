@@ -155,7 +155,7 @@
         "size": 0,
         "title": "Raw cert items uploaded per Table during timeframe",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeRange",
         "showExportToExcel": true,
@@ -173,13 +173,14 @@
       "content": {
         "version": "KqlItem/1.0",
         "query": "{SelectedTable}\r\n| where RequestSubmitted_t {TimeRange} \r\n| summarize Count=dcount(RequestID_d) by Host_s,  Requester_s, Template_s\r\n| order by Count desc",
-        "showQuery": true,
         "size": 0,
+        "showAnalytics": true,
         "title": "Unique Cert Requests by template",
         "timeContext": {
           "durationMs": 0
         },
         "timeContextFromParameter": "TimeRange",
+        "showExportToExcel": true,
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
@@ -190,13 +191,14 @@
       "content": {
         "version": "KqlItem/1.0",
         "query": "{SelectedTable}\n| summarize Count=dcount(RequestID_d) by Host_s,  Requester_s, Template_s\n| order by Count desc",
-        "showQuery": true,
         "size": 1,
+        "showAnalytics": true,
         "title": "Total unique Cert Template requests by requester",
         "timeContext": {
-          "durationMs": 2592000000
+          "durationMs": 0
         },
         "timeContextFromParameter": "TimeRange",
+        "showExportToExcel": true,
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
@@ -207,13 +209,14 @@
       "content": {
         "version": "KqlItem/1.0",
         "query": "{SelectedTable}\r\n| where isempty(EKU_s) or EKU_s contains(\"Client\")\r\n| where ValidTo_t > todatetime(now())\r\n| summarize Count=count() by Type, EKU_s, Requester_s, Template_s, Subject_CN_s, SAN_s\r\n| order by Count desc",
-        "showQuery": true,
         "size": 0,
+        "showAnalytics": true,
         "title": "Certs which are still time-valid",
         "timeContext": {
-          "durationMs": 2592000000
+          "durationMs": 0
         },
         "timeContextFromParameter": "TimeRange",
+        "showExportToExcel": true,
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
@@ -223,14 +226,15 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "{SelectedTable}\r\n| summarize Count=count() by DispositionMessage_s, Disposition_s\r\n| order by Count desc",
-        "showQuery": true,
+        "query": "{SelectedTable}\r\n| where Type <> \"Usage\"\r\n| summarize Count=count() by DispositionMessage_s, Disposition_s\r\n| order by Count desc",
         "size": 0,
-        "title": "Disposition Message Outcomes",
+        "showAnalytics": true,
+        "title": "Summary of Disposition Message outcomes",
         "timeContext": {
-          "durationMs": 2592000000
+          "durationMs": 0
         },
         "timeContextFromParameter": "TimeRange",
+        "showExportToExcel": true,
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
@@ -244,7 +248,7 @@
         "size": 0,
         "title": "Longest-lived certificates",
         "timeContext": {
-          "durationMs": 2592000000
+          "durationMs": 0
         },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
