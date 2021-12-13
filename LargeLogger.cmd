@@ -12,10 +12,11 @@ rem LargeLogger.CMD <CLEARLOG>
 rem LargeLogger.CMD <OutputFilename> <mode> [[DateToday] [DateAMonthAgo]]
 rem %1 is REQUIRED and is either CLEARLOG or the name of the output file name
 rem %2 is the mode in which to run the collector (Issued, Active, etc - See Usage)
-rem %3 is OPTIONAL for W2008R2+ and is today's date
-rem %4 is OPTIONAL for W2008R2+ and is the date a month ago
+rem %3 is OPTIONAL for W2008R2+ and is today's date - or any date you want to use as an ending point
+rem %4 is OPTIONAL for W2008R2+ and is the date a month ago - or at any date prior to %3
+rem if %3 is set, it's a good idea to set %4 as well
 
-SET _Version=0.4
+SET _Version=0.5
 rem .
 rem * PageSize is the number of rows attemptedly dumped at a time.
 rem * on slow IO or shared IO systems, this may be orders of magnitude slower,
@@ -68,6 +69,10 @@ if %_LastWaterMark% GTR %_Count% SET _Count=%_LastWaterMark%
 SET /A "_Range=_Count+_PAGESIZE"
 SET _NOW=now
 SET _MonthAgo=now-30:00
+:: override if needed
+if NOT "%3"=="" SET "_NOW=%3"
+if NOT "%4"=="" SET "_MonthAgo=%4"
+
 goto Collection
 
 :LEGACY2003
