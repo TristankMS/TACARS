@@ -6,6 +6,7 @@ Subsequent runs pick up where the last one stopped, only the new request IDs are
 From there, you can do *!exciting!* things like:
 - Enjoy *orders-of-magnitude* **faster queries** about **certificate issuance/failure** and related stats
 - Reference historical certificate issuance in **Log Analytics/Microsoft Sentinel** queries/threat hunting
+- Understand usage patterns, trends and issues for your Windows-based Public Key Infrastructure (PKI)
 - Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) (see [Wiki](https://github.com/TristankMS/TACARS/wiki) )
 
 **2021-11-25** - Initial release, designed to test the concept.
@@ -13,6 +14,10 @@ From there, you can do *!exciting!* things like:
 **2021-11-26** - Added NOUPLOAD switch to GO.CMD, which stops after exporting to CSV. 
                  Use with the ExtraBackup variable set to get unique CSVs per run.
 
+**2022-01-28** - Possible future alternative - my old friends at PKI Solutions cryptically suggest they're working on
+                 something which sounds related https://www.pkisolutions.com/episode-1-we-were-wrong/ ...
+                 If TACARS doesn't adequately meet your needs, maybe check them out...
+                 
 ----------------------------------------------------------------------------------------------------
 
 ## Prerequisites In Brief
