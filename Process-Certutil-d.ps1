@@ -176,8 +176,7 @@ ForEach ($Line in [System.IO.File]::ReadLines("$InputFile")) {
         }
         
         # Create a new row for the next record
-        $Row = "" | Select-Object Host,RowID,RequestID,RequestSubmitted,Requester,Disposition,DispositionMessage,Serial,Subject-CN,ValidFrom,ValidTo,EKU,CDP,AIA,AKI,SKI,Subject-C,Subject-O,Subject-OU,Subject-DN,Subject-Email,SAN,Template,BinaryCert,RequestStatusCode,RevocationDate,EffectiveRevocationDate
-        # excl Template-Major,Template-Minor as not populated except in cert
+        $Row = "" | Select-Object Host,RowID,RequestID,RequestSubmitted,Requester,Disposition,DispositionMessage,Serial,Subject-CN,ValidFrom,ValidTo,EKU,CDP,AIA,AKI,SKI,Subject-C,Subject-O,Subject-OU,Subject-DN,Subject-Email,SAN,Template,TemplateMajor,TemplateMinor,BinaryCert,RequestStatusCode,RevocationDate,EffectiveRevocationDate,RequestAttributes
         $Row.Host = $CAName
         [int]$Row.RowID = $rowfakeID -as [int] #($Line.Replace("Row ","")).Replace(":","")
         $Row.EKU = 'Empty'
@@ -250,9 +249,9 @@ ForEach ($Line in [System.IO.File]::ReadLines("$InputFile")) {
                 If($Line -match "Template="){
                     $Row.Template = $Line.Split("=",2)[1]}
                 If($Line -match "Major Version Number="){
-                    $Row."Template-Major" = $Line.Split("=",2)[1]}
+                    $Row."TemplateMajor" = $Line.Split("=",2)[1]}
                 If($Line -match "Minor Version Number="){
-                    $Row."Template-Minor" = $Line.Split("=",2)[1]}
+                    $Row."TemplateMinor" = $Line.Split("=",2)[1]}
                 } 
                 "AKI"{
                     If(($Line -match "KeyID")){$Row.AKI = $Line}
@@ -265,7 +264,7 @@ ForEach ($Line in [System.IO.File]::ReadLines("$InputFile")) {
                     }
                 }
                 "SAN"{
-                    If(($Line -match "Principal Name=") -or ($Line -match "DNS Name=")){
+                    If(($Line -match "Principal Name=") -or ($Line -match "DNS Name=") -or ($line -match "DS Object Guid=") -or ($line -match "RFC822 Name=")){
                         If($Row.SAN -eq 'Empty'){
                             $Row.SAN = $Line}
                         Else {$Row.SAN = $Row.SAN + "|" + $Line}
@@ -285,9 +284,10 @@ ForEach ($Line in [System.IO.File]::ReadLines("$InputFile")) {
                         Else {$Row.AIA = $Row.AIA + "|" + $Line}
                     }
                 }
-            "BinaryCert"{ 
-                    If ($Line -ne ''){
-                        $Row.BinaryCert = $Row.BinaryCert + $Line}
+                "BinaryCert"{ 
+                        If ($Line -ne ''){
+                            $Row.BinaryCert = $Row.BinaryCert + $Line
+                        }
                 }
             }
             Switch($Field) {
