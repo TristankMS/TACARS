@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory)]
-    [ValidateSet('AllRequests','ActiveCertsBasic','IssuedCertsBasic')]
+    [ValidateSet('AllRequests','ActiveCertsBasic','IssuedCertsBasic',"Everything","EverythingCurrent")]
     [string]$CollectionTarget,
     [Parameter()]
     [string]$TableName = $CollectionTarget, # might want to use CA depending on data
