@@ -16,7 +16,7 @@ rem %3 is OPTIONAL for W2008R2+ and is today's date - or any date you want to us
 rem %4 is OPTIONAL for W2008R2+ and is the date a month ago - or at any date prior to %3
 rem if %3 is set, it's a good idea to set %4 as well
 
-SET _Version=0.5
+SET _Version=0.6
 rem .
 rem * PageSize is the number of rows attemptedly dumped at a time.
 rem * on slow IO or shared IO systems, this may be orders of magnitude slower,
@@ -143,6 +143,15 @@ goto ContinueLoop
 
 :ActiveCertsBasic
   certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,NotAfter>%_now%,disposition=20" -out Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,Request.RequesterName,Request.RequestAttributes >> %1
+goto ContinueLoop
+
+:: Quick warning - this will be LARGE in text form
+:Everything
+  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,disposition=20" -out Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,ext:1.3.6.1.4.1.311.21.7,Request.RequesterName,Request.RequestAttributes,RawCertificate,Request.RawOldCertificate >> %1
+goto ContinueLoop
+
+:EverythingCurrent
+  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,NotAfter>%_now%,disposition=20" Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,ext:1.3.6.1.4.1.311.21.7,Request.RequesterName,Request.RequestAttributes,RawCertificate,Request.RawOldCertificate >> %1
 goto ContinueLoop
 
 
