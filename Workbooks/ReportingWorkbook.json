@@ -154,9 +154,6 @@
         "query": "union withsource=[\"$TableName\"] *\r\n| summarize Count=count() by TableName=[\"$TableName\"]\r\n| render barchart",
         "size": 0,
         "title": "Raw cert items uploaded per Table during timeframe",
-        "timeContext": {
-          "durationMs": 2592000000
-        },
         "timeContextFromParameter": "TimeRange",
         "showExportToExcel": true,
         "queryType": 0,
@@ -176,14 +173,11 @@
         "size": 0,
         "showAnalytics": true,
         "title": "Unique Cert Requests by template",
-        "timeContext": {
-          "durationMs": 0
-        },
-        "timeContextFromParameter": "TimeRange",
         "showExportToExcel": true,
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
+      "customWidth": "48",
       "name": "query - 8"
     },
     {
@@ -191,17 +185,14 @@
       "content": {
         "version": "KqlItem/1.0",
         "query": "{SelectedTable}\n| summarize Count=dcount(RequestID_d) by Host_s,  Requester_s, Template_s\n| order by Count desc",
-        "size": 1,
+        "size": 0,
         "showAnalytics": true,
         "title": "Total unique Cert Template requests by requester",
-        "timeContext": {
-          "durationMs": 0
-        },
-        "timeContextFromParameter": "TimeRange",
         "showExportToExcel": true,
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
+      "customWidth": "48",
       "name": "query - 4"
     },
     {
@@ -212,9 +203,6 @@
         "size": 0,
         "showAnalytics": true,
         "title": "Certs which are still time-valid",
-        "timeContext": {
-          "durationMs": 0
-        },
         "timeContextFromParameter": "TimeRange",
         "showExportToExcel": true,
         "queryType": 0,
@@ -227,17 +215,14 @@
       "content": {
         "version": "KqlItem/1.0",
         "query": "{SelectedTable}\r\n| where Type <> \"Usage\"\r\n| summarize Count=count() by DispositionMessage_s, Disposition_s\r\n| order by Count desc",
-        "size": 0,
+        "size": 1,
         "showAnalytics": true,
         "title": "Summary of Disposition Message outcomes",
-        "timeContext": {
-          "durationMs": 0
-        },
-        "timeContextFromParameter": "TimeRange",
         "showExportToExcel": true,
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
+      "customWidth": "48",
       "name": "query - 4"
     },
     {
@@ -247,18 +232,41 @@
         "query": "{SelectedTable}\r\n| where ValidTo_t > todatetime(now())\r\n| summarize by Type, ValidTo_t, Subject_CN_s, SAN_s, EKU_s, Requester_s, Template_s\r\n| order by ValidTo_t desc\r\n| take 100",
         "size": 0,
         "title": "Longest-lived certificates",
-        "timeContext": {
-          "durationMs": 0
-        },
         "timeContextFromParameter": "TimeRange",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
       "name": "queryLongestLived"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "{SelectedTable}\r\n| where SAN_s notcontains \"DS Object GUID=\"\r\n| where ValidTo_t > todatetime(now())\r\n| summarize count() by Template_s\r\n| order by count_ desc",
+        "size": 0,
+        "title": "Issued certs without a DSObjectGUID",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "customWidth": "48",
+      "name": "SANBreakdown"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "{SelectedTable}\r\n| where SAN_s contains \"DS Object GUID=\"\r\n| where ValidTo_t > todatetime(now())\r\n| summarize count() by Template_s\r\n| order by count_ desc",
+        "size": 0,
+        "title": "Issued certs with a DSObjectGUID",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "customWidth": "48",
+      "name": "SANBreakdown - Copy"
     }
   ],
   "fallbackResourceIds": [
-    "/subscriptions/170e5c17-b477-42ae-a959-9f64fb12625a/resourceGroups/test-pkimonitoring/providers/Microsoft.OperationalInsights/workspaces/pkimonitor01"
+    "/subscriptions/89d9e1a5-a160-4611-a22b-64f998c31109/resourcegroups/pki-monitoring/providers/Microsoft.OperationalInsights/workspaces/law-pki"
   ],
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
 }
