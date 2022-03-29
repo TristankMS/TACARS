@@ -263,6 +263,32 @@
       },
       "customWidth": "48",
       "name": "SANBreakdown - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let adminUsers = datatable (name: string, tier: int)\r\n[\r\n    \"administrator\", 0,\r\n    \"ctadmin\", 0,\r\n    \"serveradmin\", 1,\r\n    \"helpdeskadmin\", 2,\r\n    \"jeff_notda\",3\r\n];\r\n{SelectedTable}\r\n| extend EKU = split(EKU_s,\"|\")\r\n| where EKU has_any (\"Smart Card Logon (1.3.6.1.4.1.311.20.2.2)\", \"Client Authentication (1.3.6.1.5.5.7.3.2)\")\r\n| extend SAN = tostring(split(SAN_s,\"|\"))\r\n| extend PrincipalName = extract(\"Principal Name=([\\\\w@\\\\._\\\\+]*)\",1,SAN)\r\n| extend RFC822Name=tostring(split(SAN_s,\"RFC822 Name=\")[1])\r\n| where SAN has_any (adminUsers)\r\n| summarize by Type, TimeGenerated,Host_s,RequestID_d,Template_s,RequestSubmitted_t,SAN_s,EKU_s,Requester_s,Disposition_s,Serial_s,Subject_CN_s,ValidFrom_t,ValidTo_t",
+        "size": 0,
+        "title": "Client Auth certificates for sensitive users",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "TimeGenerated",
+              "sortOrder": 2
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "TimeGenerated",
+            "sortOrder": 2
+          }
+        ]
+      },
+      "name": "SensitiveClientAuth"
     }
   ],
   "fallbackResourceIds": [
