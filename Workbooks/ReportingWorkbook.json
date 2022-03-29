@@ -265,6 +265,14 @@
       "name": "SANBreakdown - Copy"
     },
     {
+      "type": 1,
+      "content": {
+        "json": "You can edit the list of sensitive users and their exposure/tier levels in the query below.",
+        "style": "info"
+      },
+      "name": "text - 12"
+    },
+    {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
