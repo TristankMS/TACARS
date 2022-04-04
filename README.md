@@ -18,6 +18,8 @@ From there, you can do *!exciting!* things like:
                  something which sounds related https://www.pkisolutions.com/episode-1-we-were-wrong/ ...
                  If TACARS doesn't adequately meet your needs, maybe check them out...
                  
+**2022-04-04** - Doc updates to cover the Everything, EverythingCurrent modes.
+                 
 ----------------------------------------------------------------------------------------------------
 
 ## Prerequisites In Brief
@@ -32,7 +34,8 @@ Can be installed system-wide or in its own little subfolder.
 ### Azure Monitor - a Log Analytics Workspace ID and Key
 https://portal.azure.com to set one up.
 No additional library or agent is needed, we just use the LA REST API for uploads.
-Uploading is optional, and can be skipped by using the NOUPLOAD switch with Go.CMD.
+
+**Note:** Uploading is optional, and can be skipped by using the NOUPLOAD switch with Go.CMD.
 CSV artifacts will be produced if uploading is disabled.
 
 ----------------------------------------------------------------------------------------------------
