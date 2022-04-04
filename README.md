@@ -21,10 +21,6 @@ From there, you can do *!exciting!* things like:
 ----------------------------------------------------------------------------------------------------
 
 ## Prerequisites In Brief
-### Azure Monitor - a Log Analytics Workspace ID and Key
-https://portal.azure.com to set one up.
-No additional library or agent is needed, we just use the LA REST API for uploads.
-
 ### Local CA - A local folder with some disk space
 The Collector etc is designed to run locally on a CA in this release. 
 It does support export of the CSV files produced to a second location by simple file copy, though - edit GO.CMD and 
@@ -32,6 +28,12 @@ modify the ExtraBackup line, eg `SET ExtraBackup=\\BACKUPS\CAData`.
 
 ### PowerShell 7.x
 Can be installed system-wide or in its own little subfolder.
+
+### Azure Monitor - a Log Analytics Workspace ID and Key
+https://portal.azure.com to set one up.
+No additional library or agent is needed, we just use the LA REST API for uploads.
+Uploading is optional, and can be skipped by using the NOUPLOAD switch with Go.CMD.
+CSV artifacts will be produced if uploading is disabled.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -71,6 +73,8 @@ Here are the suggested alternatives:
 |`IssuedCertsBasic`| Certificates which were issued successfully at any point [2]|
 |`Issued30Day`     | Certs issued in the last 30 days |
 |`Denied30Day`     | Requests which didn't make it in the last 30 days|
+|`Everything`      | Everything! |
+|`EverythingCurrent`| Everything which hasn't expired (expanded ActiveCertsBasic) |
 
 Each *CollectionTarget* listed above is a built-in option implemented in `LargeLogger.cmd` - inspect that file for other possible pre-existing options! Every collection option supported by LargeLogger is assumed to be supported, but hasn't been tested. You can make your own too - see the Wiki for ideas.
 
