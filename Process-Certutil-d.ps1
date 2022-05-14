@@ -117,6 +117,25 @@ possibility of such damages.
             return $null
         }
     }
+    function ParseHexDumpToString($lineInput){
+        $oneLine = $lineInput.TrimStart()
+        $startcol = 57
+        $endColChars = $oneLine.Length - $startcol
+        $cheatRange = $oneLine.SubString($StartCol, $endColChars)
+        $cheatrange
+    }
+    function ParseSIDString($lineInput){
+        if([String]::IsNullOrEmpty($lineinput)){
+            return ""
+        }
+        if($lineInput.Length -lt 26){
+            return ""
+        }
+        $Startcol = 20
+        $EndCol = $lineInput.Length - $StartCol
+        $SID = $lineInput.SubString($StartCol,$endCol)
+        $SID
+    }
 
 # Preparation
 $Rows = @()
@@ -158,6 +177,10 @@ $rowfakeID=1
 # Loop through the input file, one line at a time.
 ForEach ($Line in [System.IO.File]::ReadLines("$InputFile")) {
     
+    if($skipNextLine -eq $true){
+        $skipNextLine = $false
+        continue
+    }
     # Look for the word Row in othe output
     If($Line -Match "Row \d" -or $Line -match "_ADCS_ROW_COUNT:" ){
         Write-Debug "New Row line / End of previous Certificate Row"
@@ -176,7 +199,7 @@ ForEach ($Line in [System.IO.File]::ReadLines("$InputFile")) {
         }
         
         # Create a new row for the next record
-        $Row = "" | Select-Object Host,RowID,RequestID,RequestSubmitted,Requester,Disposition,DispositionMessage,Serial,Subject-CN,ValidFrom,ValidTo,EKU,CDP,AIA,AKI,SKI,Subject-C,Subject-O,Subject-OU,Subject-DN,Subject-Email,SAN,Template,TemplateMajor,TemplateMinor,BinaryCert,RequestStatusCode,RevocationDate,EffectiveRevocationDate,RequestAttributes
+        $Row = "" | Select-Object Host,RowID,RequestID,RequestSubmitted,Requester,Disposition,DispositionMessage,Serial,Subject-CN,ValidFrom,ValidTo,EKU,CDP,AIA,AKI,SKI,Subject-C,Subject-O,Subject-OU,Subject-DN,Subject-Email,SAN,Template,TemplateMajor,TemplateMinor,BinaryCert,RequestStatusCode,RevocationDate,EffectiveRevocationDate,RequestAttributes,SIDExt
         $Row.Host = $CAName
         [int]$Row.RowID = $rowfakeID -as [int] #($Line.Replace("Row ","")).Replace(":","")
         $Row.EKU = 'Empty'
@@ -205,103 +228,113 @@ ForEach ($Line in [System.IO.File]::ReadLines("$InputFile")) {
                 }
                 
         }
-    }
-        # Prepare the Field and Values
-        $Line = $Line.Trim()
-        $arrLine = $Line.Split(":",2)
-        $Field = $arrLIne[0].Trim()
-        $Value = $arrLIne[1]
-        $Value = $Value -Replace '"',''
-        $Value = $Value.Trim()
+    } # end of Row setup
 
-        # Well known single lines
-        Switch($Field) {
-            "Request ID" { if ($Value -match "(?:\()(\d*)(?:\))"){ $Row.RequestID = $matches[1] -as[int]} else{$Row.RequestID = $Value.Replace("0x","") -as[int]} } # want to modify this to extract bracketed number? eg 0x77 (119)
-            "Request Disposition" {$Row.Disposition = $Value} # not an int, hex/int/message ->  Request Disposition: 0x14 (20) -- Issued
-            "Request Disposition Message" {$Row.DispositionMessage = $Value} 
-            "Requester Name" {$Row.Requester = $Value}
-			"Request Submission Date" { $Row.RequestSubmitted = ConvertDateToUTC($Value) }
-            "Serial Number" {$Row.Serial = $Value}
-            "Certificate Effective Date" { $Row.ValidFrom  = ConvertDateToUTC($Value) }
-            "Issued Common Name" {$Row."Subject-CN" = $Value}
-            "Issued Country/Region" {$Row."Subject-C" = $Value}
-            "Issued Organization" {$Row."Subject-O" = $Value}
-            "Issued Organization Unit" {$Row."Subject-OU" = $Value}
-            "Issued Distinguished Name" {$Row."Subject-DN" = $Value}
-            "Issued Email Address" {$Row."Subject-Email" = $Value}
-            "Issued Subject Key Identifier" {$Row.SKI = $Value}
-            "Revocation Date" {$Row.RevocationDate = ConvertDateToUTC($Value) }
-            "Effective Revocation Date" {$Row.EffectiveRevocationDate = ConvertDateToUTC($Value) }
-            # note that this will cause a breakage when trying to go cross-region (eg interpreting an en-US date from anywhere else)
-            # so rem it out if needed
-            "Certificate Expiration Date"  {$Row.ValidTo = ConvertDateToUTC($Value) } #  {$Row.ValidTo = $Value}
-            #$Row.DaysTilExpiry = (([Decimal]::Round((New-TimeSpan $Now $Row.ValidTo).TotalDays))*-1)}   
-            
-            # and specifically because it's not done in the same way as a "whole" export, we need a template catcher
-            "Certificate Template" {$Row.Template = $Value}
-            "Request Status Code" {$Row.RequestStatusCode = $Value}
-            # OID stripping is an exercise for the reader
-        }    
-    
-        # Process the Multi Line Values if we identified them on the last loop
-        Switch ($NextSection){
-            "Template" {
-                If($Line -match "Template="){
-                    $Row.Template = $Line.Split("=",2)[1]}
-                If($Line -match "Major Version Number="){
-                    $Row."TemplateMajor" = $Line.Split("=",2)[1]}
-                If($Line -match "Minor Version Number="){
-                    $Row."TemplateMinor" = $Line.Split("=",2)[1]}
-                } 
-                "AKI"{
-                    If(($Line -match "KeyID")){$Row.AKI = $Line}
-                }       
-                "EKU"{ 
-                    If ($Line -ne ''){
-                        If($Row.EKU -eq 'Empty'){
-                            $Row.EKU = $Line}
-                        Else {$Row.EKU = $Row.EKU + "|" + $Line}
-                    }
-                }
-                "SAN"{
-                    If(($Line -match "Principal Name=") -or ($Line -match "DNS Name=") -or ($line -match "DS Object Guid=") -or ($line -match "RFC822 Name=")){
-                        If($Row.SAN -eq 'Empty'){
-                            $Row.SAN = $Line}
-                        Else {$Row.SAN = $Row.SAN + "|" + $Line}
-                    }
-                }
-                "CDP"{ 
-                    If(($Line -match "URL")){
-                        If($Row.CDP -eq 'Empty'){
-                            $Row.CDP = $Line}
-                        Else {$Row.CDP = $Row.CDP + "|" + $Line}
-                    }
-                }
-                "AIA"{ 
-                    If(($Line -match "URL")){
-                        If($Row.AIA -eq 'Empty'){
-                            $Row.AIA = $Line}
-                        Else {$Row.AIA = $Row.AIA + "|" + $Line}
-                    }
-                }
-                "BinaryCert"{ 
-                        If ($Line -ne ''){
-                            $Row.BinaryCert = $Row.BinaryCert + $Line
-                        }
+    # Prepare the Field and Values
+    $Line = $Line.Trim()
+    $arrLine = $Line.Split(":",2)
+    $Field = $arrLIne[0].Trim()
+    $Value = $arrLIne[1]
+    $Value = $Value -Replace '"',''
+    $Value = $Value.Trim()
+
+    # Well known single lines
+    Switch($Field) {
+        "Request ID" { if ($Value -match "(?:\()(\d*)(?:\))"){ $Row.RequestID = $matches[1] -as[int]} else{$Row.RequestID = $Value.Replace("0x","") -as[int]} } # want to modify this to extract bracketed number? eg 0x77 (119)
+        "Request Disposition" {$Row.Disposition = $Value} # not an int, hex/int/message ->  Request Disposition: 0x14 (20) -- Issued
+        "Request Disposition Message" {$Row.DispositionMessage = $Value} 
+        "Requester Name" {$Row.Requester = $Value}
+        "Request Submission Date" { $Row.RequestSubmitted = ConvertDateToUTC($Value) }
+        "Serial Number" {$Row.Serial = $Value}
+        "Certificate Effective Date" { $Row.ValidFrom  = ConvertDateToUTC($Value) }
+        "Issued Common Name" {$Row."Subject-CN" = $Value}
+        "Issued Country/Region" {$Row."Subject-C" = $Value}
+        "Issued Organization" {$Row."Subject-O" = $Value}
+        "Issued Organization Unit" {$Row."Subject-OU" = $Value}
+        "Issued Distinguished Name" {$Row."Subject-DN" = $Value}
+        "Issued Email Address" {$Row."Subject-Email" = $Value}
+        "Issued Subject Key Identifier" {$Row.SKI = $Value}
+        "Revocation Date" {$Row.RevocationDate = ConvertDateToUTC($Value) }
+        "Effective Revocation Date" {$Row.EffectiveRevocationDate = ConvertDateToUTC($Value) }
+        # note that this will cause a breakage when trying to go cross-region (eg interpreting an en-US date from anywhere else)
+        # so rem it out if needed
+        "Certificate Expiration Date"  {$Row.ValidTo = ConvertDateToUTC($Value) } #  {$Row.ValidTo = $Value}
+        #$Row.DaysTilExpiry = (([Decimal]::Round((New-TimeSpan $Now $Row.ValidTo).TotalDays))*-1)}   
+        
+        # and specifically because it's not done in the same way as a "whole" export, we need a template catcher
+        "Certificate Template" {$Row.Template = $Value}
+        "Request Status Code" {$Row.RequestStatusCode = $Value}
+        # OID stripping is an exercise for the reader
+    }    
+
+    # Process the Multi Line Values if we identified them on the last loop
+    Switch ($NextSection){
+        "Template" {
+            If($Line -match "Template="){
+                $Row.Template = $Line.Split("=",2)[1]}
+            If($Line -match "Major Version Number="){
+                $Row."TemplateMajor" = $Line.Split("=",2)[1]}
+            If($Line -match "Minor Version Number="){
+                $Row."TemplateMinor" = $Line.Split("=",2)[1]}
+            } 
+            "AKI"{
+                If(($Line -match "KeyID")){$Row.AKI = $Line}
+            }       
+            "EKU"{ 
+                If ($Line -ne ''){
+                    If($Row.EKU -eq 'Empty'){
+                        $Row.EKU = $Line}
+                    Else {$Row.EKU = $Row.EKU + "|" + $Line}
                 }
             }
-            Switch($Field) {
-                "Authority Key Identifier" {$NextSection = "AKI"}
-                "Subject Alternative Name" {$NextSection = "SAN"}
-                "Enhanced Key Usage" {$NextSection = "EKU"}
-                "CRL Distribution Points" {$NextSection = "CDP"}
-                "1.3.6.1.5.5.7.1.1" {$NextSection = "AIA"}
-                "1.3.6.1.4.1.311.21.7" {$NextSection = "Template"}
-                "-----BEGIN CERTIFICATE-----" {$NextSection = "BinaryCert";$Row.BinaryCert="-----BEGIN CERTIFICATE-----"}
-                "" {$NextSection=$Null}
-            }    
-
+            "SAN"{
+                If(($Line -match "Principal Name=") -or ($Line -match "DNS Name=") -or ($line -match "DS Object Guid=") -or ($line -match "RFC822 Name=")){
+                    If($Row.SAN -eq 'Empty'){
+                        $Row.SAN = $Line}
+                    Else {$Row.SAN = $Row.SAN + "|" + $Line}
+                }
+            }
+            "CDP"{ 
+                If(($Line -match "URL")){
+                    If($Row.CDP -eq 'Empty'){
+                        $Row.CDP = $Line}
+                    Else {$Row.CDP = $Row.CDP + "|" + $Line}
+                }
+            }
+            "AIA"{ 
+                If(($Line -match "URL")){
+                    If($Row.AIA -eq 'Empty'){
+                        $Row.AIA = $Line}
+                    Else {$Row.AIA = $Row.AIA + "|" + $Line}
+                }
+            }
+            "BinaryCert"{ 
+                If ($Line -ne ''){
+                    $Row.BinaryCert = $Row.BinaryCert + $Line
+                }
+            }
+            "SIDExt"{
+                If (![String]::IsNullOrWhiteSpace($line)){
+                    $Row.SIDExt += ParseHexDumpToString($Line)
+                }
+                else{
+                    $Row.SIDExt = ParseSIDString($Row.SIDExt)
+                }
+            }
         }
+        Switch($Field) {
+            "Authority Key Identifier" {$NextSection = "AKI"}
+            "Subject Alternative Name" {$NextSection = "SAN"}
+            "Enhanced Key Usage" {$NextSection = "EKU"}
+            "CRL Distribution Points" {$NextSection = "CDP"}
+            "1.3.6.1.5.5.7.1.1" {$NextSection = "AIA"}
+            "1.3.6.1.4.1.311.21.7" {$NextSection = "Template"}
+            "1.3.6.1.4.1.311.25.2" {$NextSection = "SIDExt"; $SkipNextLine = $true ;} # there's a one-line blank for SID extension output in release of kb5014754
+            "-----BEGIN CERTIFICATE-----" {$NextSection = "BinaryCert";$Row.BinaryCert="-----BEGIN CERTIFICATE-----"}
+            "" {$NextSection=$Null}
+        }    
+
+    }
 "Completed $rowfakeID"
 
 # Finished processing lines
