@@ -9,7 +9,7 @@ From there, you can do *!exciting!* things like:
 - Understand usage patterns, trends and issues for your Windows-based Public Key Infrastructure (PKI)
 - Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) (see [Wiki](https://github.com/TristankMS/TACARS/wiki) )
 
-**2022-05-14** - LargeLogger and Process-Certutil updates to capture new SID information when present in certificates
+**2022-05-14** - LargeLogger and Process-Certutil updates to capture new SID information (KB5014754) when present in certificates
 
 **2021-11-25** - Initial release, designed to test the concept.
 
