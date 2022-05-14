@@ -9,19 +9,18 @@ From there, you can do *!exciting!* things like:
 - Understand usage patterns, trends and issues for your Windows-based Public Key Infrastructure (PKI)
 - Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) (see [Wiki](https://github.com/TristankMS/TACARS/wiki) )
 
+**2022-05-14** - LargeLogger and Process-Certutil updates to capture new SID information when present in certificates
+
 **2021-11-25** - Initial release, designed to test the concept.
 
-**2021-11-26** - Added NOUPLOAD switch to GO.CMD, which stops after exporting to CSV. 
-                 Use with the ExtraBackup variable set to get unique CSVs per run.
+**2022-04-04** - Doc updates to cover the Everything, EverythingCurrent modes.
 
 **2022-01-28** - Possible future alternative - my old friends at PKI Solutions cryptically suggest they're working on
                  something which sounds related https://www.pkisolutions.com/episode-1-we-were-wrong/ ...
                  If TACARS doesn't adequately meet your needs, maybe check them out...
                  
-**2022-04-04** - Doc updates to cover the Everything, EverythingCurrent modes.
-                 
-**2022-05-14** - LargeLogger and Process-Certutil updates to capture new SID information when present in certificates
-
+**2021-11-26** - Added NOUPLOAD switch to GO.CMD, which stops after exporting to CSV. 
+                 Use with the ExtraBackup variable set to get unique CSVs per run.
 
 ----------------------------------------------------------------------------------------------------
 
