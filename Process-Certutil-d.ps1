@@ -117,14 +117,19 @@ possibility of such damages.
             return $null
         }
     }
+    
     function ParseHexDumpToString($lineInput){
+        try{
         $oneLine = $lineInput.TrimStart()
         $startcol = 57
         $endColChars = $oneLine.Length - $startcol
         $cheatRange = $oneLine.SubString($StartCol, $endColChars)
         $cheatrange
+        }
+        catch { write-error "Error parsing alleged hex dump string"}
     }
     function ParseSIDString($lineInput){
+        try{
         if([String]::IsNullOrEmpty($lineinput)){
             return ""
         }
@@ -135,6 +140,10 @@ possibility of such damages.
         $EndCol = $lineInput.Length - $StartCol
         $SID = $lineInput.SubString($StartCol,$endCol)
         $SID
+        }
+        catch{
+            Write-error "Error parsing SID from alleged SID string in $lineinput"
+        }
     }
 
 # Preparation
