@@ -134,37 +134,37 @@ set CommonFields=Request.RequestID,certificatetemplate,notafter,commonname,ext:2
 goto %2
 
 :AllRequests
-  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%" -out Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,Request.RequesterName,Request.RequestAttributes,RawCertificate,Request.RawOldCertificate >> %1
+  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%" -out Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,Request.RequesterName,Request.RequestAttributes,RawCertificate,Request.RawOldCertificate,ext:1.3.6.1.4.1.311.25.2 >> %1
 goto ContinueLoop
 
 :IssuedCertsBasic
-  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,disposition=20" -out Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,Request.RequesterName,Request.RequestAttributes >> %1
+  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,disposition=20" -out Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,Request.RequesterName,Request.RequestAttributes,ext:1.3.6.1.4.1.311.25.2 >> %1
 goto ContinueLoop
 
 :ActiveCertsBasic
-  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,NotAfter>%_now%,disposition=20" -out Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,Request.RequesterName,Request.RequestAttributes >> %1
+  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,NotAfter>%_now%,disposition=20" -out Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,Request.RequesterName,Request.RequestAttributes,ext:1.3.6.1.4.1.311.25.2 >> %1
 goto ContinueLoop
 
 :: Quick warning - this will be LARGE in text form
 :Everything
-  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,disposition=20" -out Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,ext:1.3.6.1.4.1.311.21.7,Request.RequesterName,Request.RequestAttributes,RawCertificate,Request.RawOldCertificate >> %1
+  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,disposition=20" -out Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,ext:1.3.6.1.4.1.311.21.7,Request.RequesterName,Request.RequestAttributes,RawCertificate,Request.RawOldCertificate,ext:1.3.6.1.4.1.311.25.2 >> %1
 goto ContinueLoop
 
 :EverythingCurrent
-  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,NotAfter>%_now%,disposition=20" Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,ext:1.3.6.1.4.1.311.21.7,Request.RequesterName,Request.RequestAttributes,RawCertificate,Request.RawOldCertificate >> %1
+  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,NotAfter>%_now%,disposition=20" Request.RequestID,Request.StatusCode,Request.Disposition,Request.DispositionMessage,Request.SubmittedWhen,Request.ResolvedWhen,Request.RevokedWhen,Request.RevokedEffectiveWhen,Request.RevokedReason,Request.CallerName,certificatetemplate,EnrollmentFlags,GeneralFlags,PrivateKeyFlags,SerialNumber,IssuerNameID,SubjectKeyIdentifier,NotBefore,NotAfter,commonname,ext:2.5.29.17,ext:2.5.29.37,ext:1.3.6.1.4.1.311.21.7,Request.RequesterName,Request.RequestAttributes,RawCertificate,Request.RawOldCertificate,ext:1.3.6.1.4.1.311.25.2 >> %1
 goto ContinueLoop
 
 
 :Issued
-  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,disposition=20" -out Request.RequestID,certificatetemplate,notafter,commonname,ext:2.5.29.17,Request.SubmittedWhen,Request.RequesterName >> %1
+  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,disposition=20" -out Request.RequestID,certificatetemplate,notafter,commonname,ext:2.5.29.17,Request.SubmittedWhen,Request.RequesterName,ext:1.3.6.1.4.1.311.25.2 >> %1
 goto ContinueLoop
 
 :Issued30Day
-  certutil -view -restrict "Request.SubmittedWhen>%_MonthAgo%,RequestID>%_Count%,RequestID<=%_Range%,disposition=20" -out Request.RequestID,certificatetemplate,notafter,commonname,ext:2.5.29.17,Request.SubmittedWhen,Request.RequesterName >> %1
+  certutil -view -restrict "Request.SubmittedWhen>%_MonthAgo%,RequestID>%_Count%,RequestID<=%_Range%,disposition=20" -out Request.RequestID,certificatetemplate,notafter,commonname,ext:2.5.29.17,Request.SubmittedWhen,Request.RequesterName,ext:1.3.6.1.4.1.311.25.2 >> %1
 goto ContinueLoop
 
 :Active
-  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,NotAfter>%_now%,disposition=20" -out Request.RequestID,certificatetemplate,notafter,commonname,ext:2.5.29.17,Request.SubmittedWhen,Request.RequesterName >> %1
+  certutil -view -restrict "RequestID>%_Count%,RequestID<=%_Range%,NotAfter>%_now%,disposition=20" -out Request.RequestID,certificatetemplate,notafter,commonname,ext:2.5.29.17,Request.SubmittedWhen,Request.RequesterName,ext:1.3.6.1.4.1.311.25.2 >> %1
 goto ContinueLoop
 
 :Failed
