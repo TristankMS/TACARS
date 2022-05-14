@@ -21,6 +21,8 @@ From there, you can do *!exciting!* things like:
 **2022-04-04** - Doc updates to cover the Everything, EverythingCurrent modes.
                  
 **2022-05-14** - LargeLogger and Process-Certutil updates to capture new SID information when present in certificates
+
+
 ----------------------------------------------------------------------------------------------------
 
 ## Prerequisites In Brief
