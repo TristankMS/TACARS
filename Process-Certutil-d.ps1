@@ -228,8 +228,12 @@ ForEach ($Line in [System.IO.File]::ReadLines("$InputFile")) {
                     "Export"    
                         {
                         Write-Host "Exporting CSV records"
-                        $Rows | Export-CSV $ExportFile -NoTypeInformation -Append -UseQuotes AsNeeded # note for PSv7 can use -UseQuotes AsNeeded
-                        
+                        if($PSVersionTable.Version.Major -ge 7){
+                            $Rows | Export-CSV $ExportFile -NoTypeInformation -Append -UseQuotes AsNeeded
+                        }
+                        else{
+                            $Rows | Export-CSV $ExportFile -NoTypeInformation -Append
+                        }
                         Write-Host "Checkpoint records written to file $ExportFile"
                         $Rows = @()
                         }
@@ -358,7 +362,12 @@ Switch($PSCmdlet.ParameterSetName){
                     if($Rows.Count -gt 0)
                     {
                         Write-Debug "Rows.Count = $($Rows.Count)"
-                        $Rows | Export-CSV $ExportFile -NoTypeInformation -Append -UseQuotes AsNeeded
+                        if($PSVersionTable.Version.Major -ge 7){
+                            $Rows | Export-CSV $ExportFile -NoTypeInformation -Append -UseQuotes AsNeeded
+                        }
+                        else{
+                            $Rows | Export-CSV $ExportFile -NoTypeInformation -Append
+                        }
                         Write-Host "$($Rows.Count) written to file $ExportFile"
                         if($ExportBackupPath){
                             "  Backing up Export file to $ExportBackupPath "
