@@ -30,30 +30,38 @@ possibility of such damages.
   An example command that generates the output for all issued certificates that will expire in the next 90 days is
   certutil.exe -view -restrict "NotAfter<=now+90:00,Disposition=20"
 
-  Imports the certutil.exe dump output and outputs the contents to xml.
-  Process-CertUtil.ps1 -InputFile .\CertUtilExport.txt -OutputFile .\CertutilExport.xml
+  .EXAMPLE
+  Imports the certutil.exe dump output and outputs the contents to csv
+  Process-CertUtil.ps1 -InputFile .\CertUtilExport.txt -ExportFile .\CertutilExport.csv
 
   .EXAMPLE
-  Imports the certutil.exe dump output and outputs the contents to xml.
-  Process-CertUtil.ps1 -InputFile .\CertUtilExport.txt -OutputFile .\CertutilExport.xml
+  Imports certutil dump output when created on an en-GB system, if that's not the local locale
+  Process-Certutil.ps1 -inputfile .\CertutilExport.txt -ExportFile .\CertutilExport.csv -SourceLocale en-GB
 
-  
   .PARAMETER InputFile
   The certutil.exe -dump output file file to be processed. 
   This file will be record of the stdout ">" the certutil.exe command executed 
   against a CA database.
-  .PARAMETER OutputFile
-  The resulting processed powershell object as an XML object
-  .PARAMETER ExpiresIn
-  The resulting processed powershell object
+
   .PARAMETER ExportFile
   The CSV export of the PowerShell object 
+
   .PARAMETER ExportBackupPath
-  A folder to which to copy an export of the current CSV file being processed.
+  Copy an export of the current CSV file being processed to this folder.
   Files will be ISO-Named (2021-12-13-1030-AllRequests.csv)
+
+  .PARAMETER SourceLocale
+  Locale under which dates should be processed. As Certutil output is localized
+  in the regional format of the source user, sometimes processing might occur
+  by a user with a different locale. Assumed per-file.
+  
+  .PARAMETER Append
+  Add output to an existing file. If not specified, will initially delete output file.
+
   .PARAMETER CAName
-  Optional name for the CA Issuer
-  #>
+  Optional identifier for the CA - copied into each line of the output.
+  
+#>
 
 [CmdletBinding()]
     Param (
@@ -77,14 +85,11 @@ possibility of such damages.
 	[String]$CAName,
 
     [Parameter(Mandatory=$false)]
-	[Bool]$Append = $false
-    )
+	[Bool]$Append = $false,
 
-    function DTString {
-        param( [string]$InputDate )
-            [string]$DT = Get-Date -Format o $InputDate
-            "$DT"
-       }
+    [Parameter(Mandatory=$false)]
+    [System.Globalization.CultureInfo]$SourceLocale
+    )
 
 
     function ISODateTime{
@@ -151,7 +156,9 @@ $Rows = @()
 $InputFile = (Get-Item $InputFile).FullName
 $ExportFilenamePortionOnly = $ExportFile.Split("\")[-1]
 $ExportBackupFilename = "$ExportBackupPath\$(ISODateTime)-$ExportFilenamePortionOnly"
-
+if($null -ne $SourceLocale){
+    [System.Threading.Thread]::CurrentThread.CurrentCulture = $SourceLocale 
+}
 
 if($ExportBackupPath){
     if(Test-Path $ExportBackupPath -PathType Container){
@@ -159,7 +166,6 @@ if($ExportBackupPath){
     }
     # else disable export backup?
 }
-
 
 Write-Host "Process-Certutil-D Reading Input File " $InputFile
 Switch($PSCmdlet.ParameterSetName)
