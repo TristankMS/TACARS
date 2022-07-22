@@ -1,7 +1,7 @@
 # TACARS - *Tenuously Adequate CA Reporting System*
 **Short**: Exports an **Active Directory Certificate Services** (ADCS) **Certification Authority** (CA) 
-certificate database (DB) to CSV, then uploads that data to a **Log Analytics** (LA) workspace.
-Subsequent runs pick up where the last one stopped, only the new request IDs are exported.
+certificate database (DB) to a log file, converts that log to CSV, then (optionally) uploads that data to a **Log Analytics** (LA) workspace.
+Subsequent runs pick up where the last one stopped, only the new request IDs are exported and uploaded.
 
 From there, you can do *!exciting!* things like:
 - Enjoy *orders-of-magnitude* **faster queries** about **certificate issuance/failure** and related stats
