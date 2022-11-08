@@ -9,9 +9,9 @@ From there, you can do *!exciting!* things like:
 - Understand usage patterns, trends and issues for your Windows-based Public Key Infrastructure (PKI)
 - Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) (see [Wiki](https://github.com/TristankMS/TACARS/wiki) )
 
-**2022-05-14** - LargeLogger and Process-Certutil updates to capture new SID information (KB5014754) when present in certificates
+**2022-11-08** - Minor Workbook update
 
-**2021-11-25** - Initial release, designed to test the concept.
+**2022-05-14** - LargeLogger and Process-Certutil updates to capture new SID information (KB5014754) when present in certificates
 
 **2022-04-04** - Doc updates to cover the Everything, EverythingCurrent modes.
 
@@ -22,6 +22,7 @@ From there, you can do *!exciting!* things like:
 **2021-11-26** - Added NOUPLOAD switch to GO.CMD, which stops after exporting to CSV. 
                  Use with the ExtraBackup variable set to get unique CSVs per run.
 
+**2021-11-25** - Initial release to test the concept.
 ----------------------------------------------------------------------------------------------------
 
 ## Prerequisites In Brief
