@@ -234,7 +234,7 @@ ForEach ($Line in [System.IO.File]::ReadLines("$InputFile")) {
                     "Export"    
                         {
                         Write-Host "Exporting CSV records"
-                        if($PSVersionTable.Version.Major -ge 7){
+                        if($PSVersionTable.PSVersion.Major -ge 7){
                             $Rows | Export-CSV $ExportFile -NoTypeInformation -Append -UseQuotes AsNeeded
                         }
                         else{
@@ -368,7 +368,7 @@ Switch($PSCmdlet.ParameterSetName){
                     if($Rows.Count -gt 0)
                     {
                         Write-Debug "Rows.Count = $($Rows.Count)"
-                        if($PSVersionTable.Version.Major -ge 7){
+                        if($PSVersionTable.PSVersion.Major -ge 7){
                             $Rows | Export-CSV $ExportFile -NoTypeInformation -Append -UseQuotes AsNeeded
                         }
                         else{
