@@ -23,7 +23,7 @@ From there, you can do *!exciting!* things like:
                  something which sounds related https://www.pkisolutions.com/episode-1-we-were-wrong/ ...
                  If TACARS doesn't adequately meet your needs, maybe check them out...
                  
-**2021-11-26** - Added NOUPLOAD switch to GO.CMD, which stops after exporting to CSV. 
+**2021-11-26** - Added **NOUPLOAD** switch to GO.CMD, which stops after exporting to CSV. 
                  Use with the ExtraBackup variable set to get unique CSVs per run.
 
 **2021-11-25** - Initial release to test the concept.
