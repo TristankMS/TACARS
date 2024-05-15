@@ -1,12 +1,12 @@
 # TACARS - *Tenuously Adequate CA Reporting System*
-**Short**: Exports an **Active Directory Certificate Services** (ADCS) **Certification Authority** (CA) 
+**Short**: Exports a local **Active Directory Certificate Services** (ADCS) **Certification Authority** (CA) 
 certificate database (DB) to a log file, converts that log to CSV, then (optionally) uploads that data to a **Log Analytics** (LA) workspace.
 Subsequent runs pick up where the last one stopped, only the new request IDs are exported and uploaded.
 
 From there, you can do *!exciting!* things like:
 - Enjoy *orders-of-magnitude* **faster queries** about **certificate issuance/failure** and related stats
 - Reference historical certificate issuance in **Log Analytics/Microsoft Sentinel** queries/threat hunting
-- Understand usage patterns, trends and issues for your Windows-based Public Key Infrastructure (PKI)
+- Understand usage patterns, trends and issues for your Windows-based Public Key Infrastructure (PKI), including Root, Issuing CAs and Standalone CAs. Enterprise-integrated or not.
 - Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) (see [Wiki](https://github.com/TristankMS/TACARS/wiki) )
 
 **2023-08-17** - Looks like **Microsoft Defender for Identity** (MDI) might be a better way of doing _some_ aspects of this, at least for Online CAs. See https://learn.microsoft.com/en-us/defender-for-identity/whats-new#new-sensor-type-for-active-directory-certificate-services-ad-cs . To use MDI with ADCS, you simply install the MDI sensor on your ADCS server(s).
