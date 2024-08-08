@@ -9,6 +9,8 @@ From there, you can do *!exciting!* things like:
 - Understand usage patterns, trends and issues for your Windows-based Public Key Infrastructure (PKI), including Root, Issuing CAs and Standalone CAs. Enterprise-integrated or not.
 - Use **Azure Monitor Workbooks** to provide comfortable reporting insights (in progress) (see [Wiki](https://github.com/TristankMS/TACARS/wiki) )
 
+Hey, did you notice the [Wiki](https://github.com/TristankMS/TACARS/wiki)?
+
 **2023-08-17** - Looks like **Microsoft Defender for Identity** (MDI) might be a better way of doing _some_ aspects of this, at least for Online CAs. See https://learn.microsoft.com/en-us/defender-for-identity/whats-new#new-sensor-type-for-active-directory-certificate-services-ad-cs . To use MDI with ADCS, you simply install the MDI sensor on your ADCS server(s).
 
 **2023-06-01** - **Note:** The [Data Collector API used by TACARS](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/data-collector-api) is being deprecated (Update: in September 2026), so the Log Analytics upload script needs modification to use DCRs and DCEs to survive that approaching event. Will MDI get there first?               
